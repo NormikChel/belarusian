@@ -40,17 +40,20 @@ fn write_page(path: &str, html: String) {
 }
 
 fn main() {
+    // Чысьцім dist
+    let _ = fs::remove_dir_all("dist");
     fs::create_dir_all("dist").unwrap();
 
-    write_page("index.html",         IndexTmpl { active: "index" }.render().unwrap());
-    write_page("history/index.html", HistoryTmpl { active: "history" }.render().unwrap());
-    write_page("grammar/index.html", GrammarTmpl { active: "grammar" }.render().unwrap());
-    write_page("vocabulary/index.html", VocabTmpl { active: "vocabulary" }.render().unwrap());
-    write_page("taraskievica/index.html", TaraTmpl { active: "taraskievica" }.render().unwrap());
-    write_page("dialects/index.html", DialTmpl { active: "dialects" }.render().unwrap());
-    write_page("about/index.html",   AboutTmpl { active: "about" }.render().unwrap());
+    // ВАЖНА: усе старонкі робім .html файламі (бяз падпапак)
+    write_page("index.html",         IndexTmpl      { active: "index" }.render().unwrap());
+    write_page("history.html",       HistoryTmpl    { active: "history" }.render().unwrap());
+    write_page("grammar.html",       GrammarTmpl    { active: "grammar" }.render().unwrap());
+    write_page("vocabulary.html",    VocabTmpl      { active: "vocabulary" }.render().unwrap());
+    write_page("taraskievica.html",  TaraTmpl       { active: "taraskievica" }.render().unwrap());
+    write_page("dialects.html",      DialTmpl       { active: "dialects" }.render().unwrap());
+    write_page("about.html",         AboutTmpl      { active: "about" }.render().unwrap());
 
-    // Копируем статику
+    // Капіруем статыку
     copy_dir("static", "dist/static");
 
     println!("\n🚀 Гатово! Старонкі ў dist/");
