@@ -70,12 +70,12 @@ fn layout(title: &str, active: &str, body: &str) -> String {
     </div>
     <div class="footer-col"><h4>Правапіс</h4>
       <a href="/taraskievica">Тарашкевіца</a>
-      <a href="/taraskievica#нарк">Наркамаўка</a>
-      <a href="/taraskievica#правілы">Асноўныя правілы</a>
+      <a href="/taraskievica&#35;нарк">Наркамаўка</a>
+      <a href="/taraskievica&#35;правілы">Асноўныя правілы</a>
     </div>
     <div class="footer-col"><h4>Праект</h4>
-      <a href="/about">Пра нас</a><a href="/about#кантакты">Кантакты</a>
-      <a href="/about#ліцэнзія">Ліцэнзія</a>
+      <a href="/about">Пра нас</a><a href="/about&#35;кантакты">Кантакты</a>
+      <a href="/about&#35;ліцэнзія">Ліцэнзія</a>
     </div>
     <div class="footer-col footer-newsletter"><h4>Ліставаць</h4>
       <p>Атрымлівай новыя артыкулы пра мову раз на тыдзень.</p>
@@ -322,7 +322,7 @@ async fn taraskievica() -> Html<String> {
   <div class="glass panel panel-wide">
     <h2 id="правілы">Асноўныя правілы</h2>
     <ol class="rules">
-      <li>Пасьля галосных пішам <b>ў</b>, а не <b>в</b>: <em>быў, казаў, хлеў</em>.</li>
+      <li>Пасьля галосных пішам <b>ў</b>, а ня <b>в</b>: <em>быў, казаў, хлеў</em>.</li>
       <li>Мяккі знак захоўваем там, дзе ён гістарычна быў: <em>сьвет, зьвер, цьвёрды</em>.</li>
       <li>У родным склоне множнага ліку — <b>-а</b> ці <b>-яў</b>: <em>кніг, сталоў, людзей</em>.</li>
       <li>Канчатак <b>-ае</b> ў прыметніках: <em>прыгожае, новае, маладое</em>.</li>
@@ -410,6 +410,14 @@ async fn about() -> Html<String> {
 }
 
 // ============================================================
+//  Хэлскек
+// ============================================================
+
+async fn health_check() -> &'static str {
+    "OK"
+}
+
+// ============================================================
 //  Галоўная функцыя
 // ============================================================
 
@@ -417,6 +425,7 @@ async fn about() -> Html<String> {
 async fn main() {
     let app = Router::new()
         .route("/", get(index))
+        .route("/health", get(health_check))
         .route("/history", get(history))
         .route("/grammar", get(grammar))
         .route("/vocabulary", get(vocabulary))
