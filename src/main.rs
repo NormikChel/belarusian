@@ -27,7 +27,7 @@ fn layout(title: &str, active: &str, body: &str) -> String {
         nav_item("/about", "about", "Пра праект"),
     );
 
-    format!(r#"<!DOCTYPE html>
+    format!(r##"<!DOCTYPE html>
 <html lang="be" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -93,7 +93,7 @@ fn layout(title: &str, active: &str, body: &str) -> String {
   </div>
 </footer>
 <script src="/static/app.js" defer></script>
-</body></html>"#)
+</body></html>"##)
 }
 
 // ============================================================
@@ -101,7 +101,7 @@ fn layout(title: &str, active: &str, body: &str) -> String {
 // ============================================================
 
 async fn index() -> Html<String> {
-    let body = r#"
+    let body = r##"
 <section class="hero"><div class="hero-inner glass">
   <span class="badge">🇧🇾 Жывая мова · Тарашкевіца</span>
   <h1 class="hero-title">Беларуская мова — <em>сакавітая</em>, старажытная, свабодная.</h1>
@@ -136,7 +136,7 @@ async fn index() -> Html<String> {
     <cite>— Францішак Багушэвіч, 1891</cite>
   </blockquote>
 </section>
-"#;
+"##;
     Html(layout("Галоўная", "index", body))
 }
 
@@ -161,20 +161,20 @@ async fn history() -> Html<String> {
     let mut items = String::new();
     for (year, title, text) in events {
         items.push_str(&format!(
-            r#"<li class="glass"><span class="year">{}</span><h3>{}</h3><p>{}</p></li>"#,
+            r##"<li class="glass"><span class="year">{}</span><h3>{}</h3><p>{}</p></li>"##,
             year, title, text
         ));
     }
 
     let body = format!(
-        r#"
+        r##"
 <section class="page-hero glass">
   <span class="badge">📜 Гісторыя</span>
   <h1>Дзесяць стагодзьдзяў жывога слова</h1>
   <p>Мова — гэта ня музэй. Яна жыве, зьмяняецца, змагаецца. Вось яе шлях.</p>
 </section>
 <section class="section"><ol class="timeline">{}</ol></section>
-"#,
+"##,
         items
     );
     Html(layout("Гісторыя", "history", &body))
@@ -185,7 +185,7 @@ async fn history() -> Html<String> {
 // ============================================================
 
 async fn grammar() -> Html<String> {
-    let body = r#"
+    let body = r##"
 <section class="page-hero glass">
   <span class="badge">🧩 Граматыка</span>
   <h1>Гнуткая, як лазіна</h1>
@@ -239,7 +239,7 @@ async fn grammar() -> Html<String> {
     </ul>
   </div>
 </section>
-"#;
+"##;
     Html(layout("Граматыка", "grammar", body))
 }
 
@@ -263,20 +263,20 @@ async fn vocabulary() -> Html<String> {
     let mut cards = String::new();
     for (word, pron, text) in words {
         cards.push_str(&format!(
-            r#"<article class="word glass"><h3>{}</h3><p class="word-pron">{}</p><p>{}</p></article>"#,
+            r##"<article class="word glass"><h3>{}</h3><p class="word-pron">{}</p><p>{}</p></article>"##,
             word, pron, text
         ));
     }
 
     let body = format!(
-        r#"
+        r##"
 <section class="page-hero glass">
   <span class="badge">📖 Слоўнік</span>
   <h1>Словы, якія гавораць самі за сябе</h1>
   <p>Тут жывуць словы, якія няма як перакласьці на іншыя мовы. Бо яны — нашыя.</p>
 </section>
 <section class="section"><div class="word-grid">{}</div></section>
-"#,
+"##,
         cards
     );
     Html(layout("Слоўнік", "vocabulary", &body))
@@ -287,7 +287,7 @@ async fn vocabulary() -> Html<String> {
 // ============================================================
 
 async fn taraskievica() -> Html<String> {
-    let body = r#"
+    let body = r##"
 <section class="page-hero glass">
   <span class="badge">✒️ Тарашкевіца</span>
   <h1>Клясычны правапіс, якому 100+ гадоў</h1>
@@ -330,7 +330,7 @@ async fn taraskievica() -> Html<String> {
     </ol>
   </div>
 </section>
-"#;
+"##;
     Html(layout("Тарашкевіца", "taraskievica", body))
 }
 
@@ -339,7 +339,7 @@ async fn taraskievica() -> Html<String> {
 // ============================================================
 
 async fn dialects() -> Html<String> {
-    let body = r#"
+    let body = r##"
 <section class="page-hero glass">
   <span class="badge">🗺️ Гаворкі</span>
   <h1>Мова гучыць па-рознаму — і гэта цуд</h1>
@@ -375,7 +375,7 @@ async fn dialects() -> Html<String> {
     </ul>
   </article>
 </section>
-"#;
+"##;
     Html(layout("Гаворкі", "dialects", body))
 }
 
@@ -384,7 +384,7 @@ async fn dialects() -> Html<String> {
 // ============================================================
 
 async fn about() -> Html<String> {
-    let body = r#"
+    let body = r##"
 <section class="page-hero glass">
   <span class="badge">🫱 Пра праект</span>
   <h1>Навошта ўсё гэта</h1>
@@ -405,7 +405,7 @@ async fn about() -> Html<String> {
     <p>Код — на GitHub пад MIT. Тэксты — вольныя для выкарыстаньня з спасылкай.</p>
   </div>
 </section>
-"#;
+"##;
     Html(layout("Пра праект", "about", body))
 }
 
