@@ -1,0 +1,9 @@
+features:
+  - create:
+      domain: belarusian.nue.dom.my.id
+      user: belarusian
+      pass: 'Qql_)6Hur_WS1M987p'
+      email: nenormikchel@gmail.com
+  - ssl
+
+source: 'https://github.com/NormikChel/belarusian-static'
