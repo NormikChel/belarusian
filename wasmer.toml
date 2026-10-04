@@ -1,0 +1,22 @@
+[package]
+name = "normikchel/belarusian"
+version = "0.1.0"
+description = "Беларускі сайт на Rust"
+license = "MIT"
+private = true
+
+[[module]]
+name = "belarusian"
+source = "./target/wasm32-wasmer-wasi/release/belarusian.wasm"
+abi = "wasi"
+
+[[command]]
+name = "belarusian"
+module = "belarusian"
+runner = "wasi"
+
+[command.annotations.wasi]
+env = [
+    "PORT=8080"
+]
+main-args = []
