@@ -1,7 +1,6 @@
 use askama::Template;
-use axum::{routing::get, Router};
-use std::net::SocketAddr;
-use tower_http::{services::ServeDir, trace::TraceLayer};
+use std::fs;
+use std::path::Path;
 
 #[derive(Template)]
 #[template(path = "index.html")]
@@ -31,37 +30,43 @@ struct DialTmpl { active: &'static str }
 #[template(path = "about.html")]
 struct AboutTmpl { active: &'static str }
 
-#[tokio::main]
-async fn main() {
-    tracing_subscriber::fmt()
-        .with_max_level(tracing::Level::INFO)
-        .init();
-
-    let app = Router::new()
-        .route("/", get(index))
-        .route("/history", get(history))
-        .route("/grammar", get(grammar))
-        .route("/vocabulary", get(vocabulary))
-        .route("/taraskievica", get(taraskievica))
-        .route("/dialects", get(dialects))
-        .route("/about", get(about))
-        .nest_service("/static", ServeDir::new("static"))
-        .layer(TraceLayer::new_for_http());
-
-    let port: u16 = std::env::var("PORT")
-        .ok().and_then(|s| s.parse().ok()).unwrap_or(8080);
-    let addr = SocketAddr::from(([0, 0, 0, 0], port));
-
-    println!("🚀 Моўны сэрвэр круціцца на http://{}", addr);
-
-    let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
-    axum::serve(listener, app).await.unwrap();
+fn write_page(path: &str, html: String) {
+    let out = Path::new("dist").join(path);
+    if let Some(parent) = out.parent() {
+        fs::create_dir_all(parent).unwrap();
+    }
+    fs::write(&out, html).unwrap();
+    println!("✓ {}", out.display());
 }
 
-async fn index() -> IndexTmpl { IndexTmpl { active: "index" } }
-async fn history() -> HistoryTmpl { HistoryTmpl { active: "history" } }
-async fn grammar() -> GrammarTmpl { GrammarTmpl { active: "grammar" } }
-async fn vocabulary() -> VocabTmpl { VocabTmpl { active: "vocabulary" } }
-async fn taraskievica() -> TaraTmpl { TaraTmpl { active: "taraskievica" } }
-async fn dialects() -> DialTmpl { DialTmpl { active: "dialects" } }
-async fn about() -> AboutTmpl { AboutTmpl { active: "about" } }
+fn main() {
+    fs::create_dir_all("dist").unwrap();
+
+    write_page("index.html",         IndexTmpl { active: "index" }.render().unwrap());
+    write_page("history/index.html", HistoryTmpl { active: "history" }.render().unwrap());
+    write_page("grammar/index.html", GrammarTmpl { active: "grammar" }.render().unwrap());
+    write_page("vocabulary/index.html", VocabTmpl { active: "vocabulary" }.render().unwrap());
+    write_page("taraskievica/index.html", TaraTmpl { active: "taraskievica" }.render().unwrap());
+    write_page("dialects/index.html", DialTmpl { active: "dialects" }.render().unwrap());
+    write_page("about/index.html",   AboutTmpl { active: "about" }.render().unwrap());
+
+    // Копируем статику
+    copy_dir("static", "dist/static");
+
+    println!("\n🚀 Гатово! Старонкі ў dist/");
+}
+
+fn copy_dir(from: &str, to: &str) {
+    fs::create_dir_all(to).unwrap();
+    for entry in fs::read_dir(from).unwrap() {
+        let entry = entry.unwrap();
+        let path = entry.path();
+        let dest = Path::new(to).join(entry.file_name());
+        if path.is_dir() {
+            copy_dir(path.to_str().unwrap(), dest.to_str().unwrap());
+        } else {
+            fs::copy(&path, &dest).unwrap();
+            println!("✓ {}", dest.display());
+        }
+    }
+}
